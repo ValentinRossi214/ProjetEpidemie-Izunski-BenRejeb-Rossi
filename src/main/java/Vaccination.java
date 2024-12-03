@@ -1,4 +1,5 @@
 public class Vaccination {
+    //TODO: Ajouter l'accès à un vaccin d'une personne
     private int nbDosesPrises;
     private final Vaccin vaccin;
 
