@@ -83,4 +83,15 @@ public class Personne {
     public Sensibilite getSensibilite() {
         return sensibilite;
     }
+
+    @Override
+    public String toString() {
+        return "Personne{" +
+                "nom='" + nom + '\'' +
+                ", prenom='" + prenom + '\'' +
+                ", sensibilite=" + sensibilite +
+                ", abcisse=" + abcisse +
+                ", ordonnee=" + ordonnee +
+                '}';
+    }
 }

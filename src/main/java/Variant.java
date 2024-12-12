@@ -3,18 +3,19 @@ import java.util.EnumMap;
 public class Variant extends Maladie {
     public Variant(String nom,
                    int periodeIncubation,
-                   int probabiliteGuerison,
-                   int probabiliteDeces,
+                   float probabiliteGuerison,
+                   float probabiliteDeces,
                    EnumMap<Sensibilite, Float> tauxTransmission,
-                   int distanceMaxTransmission) {
-        super(nom, periodeIncubation, probabiliteGuerison, probabiliteDeces, tauxTransmission, distanceMaxTransmission);
+                   int distanceMaxTransmission,
+                   float tauxTransmissionInitial) {
+        super(nom, periodeIncubation, probabiliteGuerison, probabiliteDeces, tauxTransmission, distanceMaxTransmission, tauxTransmissionInitial);
     }
 
     public String getNom() {
         return super.getNom();
     }
 
-    public float getPeriodeIncubation() {
+    public int getPeriodeIncubation() {
         return super.getPeriodeIncubation();
     }
 
@@ -32,5 +33,9 @@ public class Variant extends Maladie {
 
     public int getDistanceMaxTransmission() {
         return super.getDistanceMaxTransmission();
+    }
+
+    public float getTauxTransmissionInitial() {
+        return super.getTauxTransmissionInitial();
     }
 }

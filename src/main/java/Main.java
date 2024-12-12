@@ -1,5 +1,53 @@
+import java.util.*;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        Sensibilite sensibilite1 = Sensibilite.Sensible;
+        Sensibilite sensibilite2 = Sensibilite.Sensible;
+        Sensibilite sensibilite3 = Sensibilite.Sensible;
+
+        Set<Comportement> comportements1 = new HashSet<>();
+        comportements1.add(Comportement.DistanciationSociale);
+        comportements1.add(Comportement.Protection);
+
+        Set<Comportement> comportements2 = new HashSet<>();
+
+        Set<Comportement> comportements3 = new HashSet<>();
+
+        Set<Comportement> comportements4 = new HashSet<>();
+        comportements4.add(Comportement.Protection);
+
+        Set<Comportement> comportements5 = new HashSet<>();
+
+        Personne personne1 = new Personne("Dupont", "Jean", sensibilite1, 12, comportements1);
+        Personne personne2 = new Personne("Martin", "Sophie", sensibilite2, 8, comportements2);
+        Personne personne3 = new Personne("Durand", "Alice", sensibilite3, 15, comportements3);
+        Personne personne4 = new Personne("Bernard", "Luc", sensibilite1, 10, comportements4);
+        Personne personne5 = new Personne("Morel", "Emma", sensibilite2, 5, comportements5);
+
+        List<Personne> personneList = new ArrayList<>();
+        personneList.add(personne1);
+        personneList.add(personne2);
+        personneList.add(personne3);
+        personneList.add(personne4);
+        personneList.add(personne5);
+
+        EnumMap<Sensibilite, Float> facteursTransmission = new EnumMap<>(Sensibilite.class);
+        facteursTransmission.put(Sensibilite.Sensible, 1.0F);
+        facteursTransmission.put(Sensibilite.Neutre, 0.9F);
+        facteursTransmission.put(Sensibilite.Resistant, 0.8F);
+
+
+        Variant castapiane = new Variant("castapiane", 2, 0.0f, 0.0f, facteursTransmission, 10, 0.5f);
+
+        Espace espace = new Espace(10, 10, personneList, castapiane);
+
+        espace.initialiserEspace();
+
+        espace.nouveauCycle();
+        espace.nouveauCycle();
+        espace.nouveauCycle();
+        espace.nouveauCycle();
+        espace.nouveauCycle();
     }
 }

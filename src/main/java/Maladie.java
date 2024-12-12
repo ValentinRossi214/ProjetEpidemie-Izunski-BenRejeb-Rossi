@@ -2,31 +2,35 @@ import java.util.EnumMap;
 
 public abstract class Maladie {
     private String nom;
-    private float periodeIncubation;
+    private int periodeIncubation;
     private float probabiliteGuerison;
     private float probabiliteDeces;
     private EnumMap<Sensibilite, Float> tauxTransmission;
     private int distanceMaxTransmission;
 
+    private float tauxTransmissionInitial;
+
     public Maladie(String nom,
-                   float periodeIncubation,
+                   int periodeIncubation,
                    float probabiliteGuerison,
                    float probabiliteDeces,
                    EnumMap<Sensibilite, Float> tauxTransmission,
-                   int distanceMaxTransmission) {
+                   int distanceMaxTransmission,
+                   float tauxTransmissionInitial) {
         this.nom = nom;
         this.periodeIncubation = periodeIncubation;
         this.probabiliteGuerison = probabiliteGuerison;
         this.probabiliteDeces = probabiliteDeces;
         this.tauxTransmission = tauxTransmission;
         this.distanceMaxTransmission = distanceMaxTransmission;
+        this.tauxTransmissionInitial = tauxTransmissionInitial;
     }
 
     public String getNom() {
         return nom;
     }
 
-    public float getPeriodeIncubation() {
+    public int getPeriodeIncubation() {
         return periodeIncubation;
     }
 
@@ -44,5 +48,9 @@ public abstract class Maladie {
 
     public int getDistanceMaxTransmission() {
         return distanceMaxTransmission;
+    }
+
+    public float getTauxTransmissionInitial() {
+        return tauxTransmissionInitial;
     }
 }

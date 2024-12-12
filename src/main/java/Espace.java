@@ -29,6 +29,20 @@ public class Espace {
 
         patientZero();
         detecterVoisins();
+
+        System.out.println("\n### Voisins\n");
+        for (Personne p : voisins.keySet()) {
+            System.out.println(p);
+            for (Personne pp : voisins.get(p)){
+                System.out.println(" -> " + pp);
+            }
+        }
+
+        System.out.println("\n### Patient 0\n");
+
+        for (Personne p : infectes) {
+            System.out.println(p);
+        }
     }
 
     private void patientZero() {
@@ -44,8 +58,10 @@ public class Espace {
 
         for (int i = 0 ; i < personnes.size() ; i++) {
             Personne personneCourante = personnes.get(i);
-            for (int j = i + 1 ; j < personnes.size() - i ; j++) {
+            System.out.println(personneCourante);
+            for (int j = i + 1 ; j < personnes.size() ; j++) {
                 Personne personneAComparer = personnes.get(j);
+                System.out.println(personneCourante.getDistance(personneAComparer) + " -> " + personneAComparer);
                 if (personneCourante.getDistance(personneAComparer) <= maladie.getDistanceMaxTransmission()){
                     voisins.get(personneCourante).add(personneAComparer);
                     voisins.get(personneAComparer).add(personneCourante);
@@ -55,65 +71,73 @@ public class Espace {
     }
 
     public void nouveauCycle() {
+        System.out.println("\n##########################################");
+        System.out.println("NOUVEAU CYCLE\n");
         numCycle++;
-        cycleRemission();
         cycleTransmission();
+        cycleRemission();
         cycleDeces();
+
+        System.out.println("\nToutes les personnes malades : \n");
+        for(Personne p : infectes) {
+            System.out.println(p);
+        }
+        System.out.println("\nToutes les personnes saines : \n");
+        for(Personne p : personnes) {
+            if (!infectes.contains(p))
+                System.out.println(p);
+        }
     }
 
-    public void cycleRemission() {
+    private void cycleRemission() {
+        System.out.println("\n### Personnes guéries\n");
+
         Random rand = new Random();
+        List<Personne> personnesGueries = new ArrayList<>();
+
         for (Personne p : infectes) {
             if(rand.nextFloat() <= maladie.getProbabiliteGuerison()) {
-                infectes.remove(p);
+                System.out.println(p);
+                personnesGueries.add(p);
             }
         }
+
+        infectes.removeAll(personnesGueries);
     }
 
-    public void cycleTransmission() {
-        Random rand = new Random();
+    private void cycleTransmission() {
+        System.out.println("\n### Personnes infectées\n");
+
+        List<Personne> personnesInfectees = new ArrayList<>();
+        boolean infectee;
+
+
         for (Personne pInfectee : infectes) {
-            for (Personne pVoisin : voisins.get(pInfectee))
-                if(pVoisin.getComportements().contains(Comportement.Protection)) {
-                    switch (pVoisin.getSensibilite()) {
-                        case Sensible :
-                            if(rand.nextFloat() <= maladie.getTauxTransmission().get(Sensibilite.Sensible) / 2)
-                                infectes.add(pVoisin);
-                            break;
-                        case Neutre :
-                            if(rand.nextFloat() <= maladie.getTauxTransmission().get(Sensibilite.Neutre) / 2)
-                                infectes.add(pVoisin);
-                            break;
-                        case Resistant :
-                            if(rand.nextFloat() <= maladie.getTauxTransmission().get(Sensibilite.Resistant) / 2)
-                                infectes.add(pVoisin);
-                            break;
-                    }
-                } else {
-                    switch (pVoisin.getSensibilite()) {
-                        case Sensible :
-                            if(rand.nextFloat() <= maladie.getTauxTransmission().get(Sensibilite.Sensible))
-                                infectes.add(pVoisin);
-                            break;
-                        case Neutre :
-                            if(rand.nextFloat() <= maladie.getTauxTransmission().get(Sensibilite.Neutre))
-                                infectes.add(pVoisin);
-                            break;
-                        case Resistant :
-                            if(rand.nextFloat() <= maladie.getTauxTransmission().get(Sensibilite.Resistant))
-                                infectes.add(pVoisin);
-                            break;
-                }
+            for (Personne pVoisin : voisins.get(pInfectee)) {
+                infectee = tenterInfecterVoisin(pInfectee, pVoisin);
+                if (infectee)
+                    personnesInfectees.add(pVoisin);
             }
         }
+
+        infectes.addAll(personnesInfectees);
     }
 
-    public void cycleDeces() {
+    private void cycleDeces() {
+        System.out.println("\n### Personnes Mortes\n");
+
         Random rand = new Random();
+        List<Personne> personnesMortes = new ArrayList<>();
+
         for (Personne p : infectes) {
             if(rand.nextFloat() <= maladie.getProbabiliteDeces()) {
-                decesPersonne(p);
+                System.out.println(p);
+                personnesMortes.add(p);
             }
+        }
+
+        for (Personne p : personnesMortes) {
+            decesPersonne(p);
         }
     }
 
@@ -126,4 +150,58 @@ public class Espace {
         }
     }
 
+    private boolean tenterInfecterVoisin(Personne pInfectee, Personne pVoisin) {
+        Random rand = new Random();
+
+        float probaInfection = 1 - ((float) pInfectee.getDistance(pVoisin) / maladie.getDistanceMaxTransmission());
+        probaInfection = maladie.getTauxTransmissionInitial() * probaInfection;
+
+        if(infectes.contains(pVoisin))
+            return false;
+
+        if(pVoisin.getComportements().contains(Comportement.Protection)) {
+            switch (pVoisin.getSensibilite()) {
+                case Sensible :
+                    if(rand.nextFloat() <= probaInfection * maladie.getTauxTransmission().get(Sensibilite.Sensible) / 2) {
+                        System.out.println(pVoisin);
+                        return true;
+                    }
+                    break;
+                case Neutre :
+                    if(rand.nextFloat() <= probaInfection * maladie.getTauxTransmission().get(Sensibilite.Neutre) / 2) {
+                        System.out.println(pVoisin);
+                        return true;
+                    }
+                    break;
+                case Resistant :
+                    if(rand.nextFloat() <= probaInfection * maladie.getTauxTransmission().get(Sensibilite.Resistant) / 2) {
+                        System.out.println(pVoisin);
+                        return true;
+                    }
+                    break;
+            }
+        } else {
+            switch (pVoisin.getSensibilite()) {
+                case Sensible :
+                    if(rand.nextFloat() <= probaInfection * maladie.getTauxTransmission().get(Sensibilite.Sensible)) {
+                        System.out.println(pVoisin);
+                        return true;
+                    }
+                    break;
+                case Neutre :
+                    if(rand.nextFloat() <= probaInfection * maladie.getTauxTransmission().get(Sensibilite.Neutre)) {
+                        System.out.println(pVoisin);
+                        return true;
+                    }
+                    break;
+                case Resistant :
+                    if(rand.nextFloat() <= probaInfection * maladie.getTauxTransmission().get(Sensibilite.Resistant)) {
+                        System.out.println(pVoisin);
+                        return true;
+                    }
+                    break;
+            }
+        }
+        return false;
+    }
 }
