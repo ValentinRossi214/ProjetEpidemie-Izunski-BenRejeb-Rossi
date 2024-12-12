@@ -1,3 +1,4 @@
+import java.util.HashSet;
 import java.util.Set;
 
 public class Personne {
@@ -20,10 +21,13 @@ public class Personne {
         this.sensibilite = sensibilite;
         this.dureeRemission = dureeRemission;
         this.comportements = comportements;
+        abcisse = 0;
+        ordonnee = 0;
+        vaccinations = new HashSet<>();
     }
 
     public int getDistance(Personne personne) {
-        int distance = Math.abs(this.abcisse - personne.abcisse) + Math.abs(this.ordonnee - personne.ordonnee);
+        int distance = Math.abs(this.abcisse - personne.getAbcisse()) + Math.abs(this.ordonnee - personne.getOrdonnee());
 
         if (comportements.contains(Comportement.DistanciationSociale)) {
             return distance * 2;
@@ -55,5 +59,28 @@ public class Personne {
     public Set<Vaccination> getVaccinations() {
         return vaccinations;
     }
-    ;
+
+    public int getAbcisse() {
+        return abcisse;
+    }
+
+    public void setAbcisse(int abcisse) {
+        this.abcisse = abcisse;
+    }
+
+    public int getOrdonnee() {
+        return ordonnee;
+    }
+
+    public void setOrdonnee(int ordonnee) {
+        this.ordonnee = ordonnee;
+    }
+
+    public Set<Comportement> getComportements() {
+        return comportements;
+    }
+
+    public Sensibilite getSensibilite() {
+        return sensibilite;
+    }
 }
