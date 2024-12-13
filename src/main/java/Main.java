@@ -38,16 +38,16 @@ public class Main {
         facteursTransmission.put(Sensibilite.Resistant, 0.8F);
 
 
-        Variant castapiane = new Variant("castapiane", 2, 0.0f, 0.0f, facteursTransmission, 10, 0.5f);
+        Variant Grippe = new Variant("Grippe", 2, 0.0f, 0.0f, facteursTransmission, 10, 0.5f);
 
-        Espace espace = new Espace(10, 10, personneList, castapiane);
+        EspaceCyclique espaceCyclique = new EspaceCyclique(10, 10, personneList, Grippe);
 
-        espace.initialiserEspace();
+        espaceCyclique.initialiserEspace();
 
-        espace.nouveauCycle();
-        espace.nouveauCycle();
-        espace.nouveauCycle();
-        espace.nouveauCycle();
-        espace.nouveauCycle();
+        espaceCyclique.nouveauCycle();
+        espaceCyclique.nouveauCycle();
+        espaceCyclique.nouveauCycle();
+        espaceCyclique.nouveauCycle();
+        espaceCyclique.nouveauCycle();
     }
 }

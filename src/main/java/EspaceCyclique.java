@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Espace {
+public class EspaceCyclique {
     //TODO : implémenter le temps de rémission
     private int longeur;
     private int largeur;
@@ -10,7 +10,7 @@ public class Espace {
     private Map<Personne, List<Personne>> voisins;
     private int numCycle;
 
-    public Espace(int longeur, int largeur, List<Personne> personnes, Variant maladie) {
+    public EspaceCyclique(int longeur, int largeur, List<Personne> personnes, Variant maladie) {
         this.longeur = longeur;
         this.largeur = largeur;
         this.personnes = personnes;
