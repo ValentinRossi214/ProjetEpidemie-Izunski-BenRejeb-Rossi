@@ -36,24 +36,22 @@ public class Personne {
         }
     }
 
-    public boolean seFaireVacciner(Vaccin vaccin) {
-
-        for (Vaccination vaccination : vaccinations) {
-            if (vaccination.getVaccin().equals(vaccin)) {
-
-                if (vaccin.getType() == TypeVaccin.Unidose) {
-                    throw new IllegalArgumentException("Ce vaccin ne nécessite qu'une seule dose.");
-                } else if (vaccination.getNbDosesPrises() >= 2) {
-                    throw new IllegalArgumentException("Cette personne à déjà reçu les deux doses de ce vaccin.");
-                } else {
-                    vaccination.faireDeuxiemeDose();
-                    return true;
+    public void seFaireVacciner(Vaccin vaccin) {
+        if (!vaccinations.isEmpty()) {
+            for (Vaccination vaccination : vaccinations) {
+                if (vaccination.getVaccin().equals(vaccin)) {
+                    if (vaccin.getType() == TypeVaccin.Unidose) {
+                        throw new IllegalStateException("Ce vaccin ne nécessite qu'une seule dose.");
+                    } else if (vaccination.getNbDosesPrises() == 2) {
+                        throw new IllegalStateException("Cette personne à déjà reçu les deux doses de ce vaccin.");
+                    } else {
+                        vaccination.faireDeuxiemeDose();
+                    }
                 }
             }
         }
-
-        vaccinations.add(new Vaccination(vaccin));
-        return true;
+        else
+            vaccinations.add(new Vaccination(vaccin, this));
     }
 
     public Set<Vaccination> getVaccinations() {
@@ -82,6 +80,10 @@ public class Personne {
 
     public Sensibilite getSensibilite() {
         return sensibilite;
+    }
+
+    public int getDureeRemission() {
+        return dureeRemission;
     }
 
     @Override

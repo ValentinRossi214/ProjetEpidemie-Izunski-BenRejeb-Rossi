@@ -37,17 +37,22 @@ public class Main {
         facteursTransmission.put(Sensibilite.Neutre, 0.9F);
         facteursTransmission.put(Sensibilite.Resistant, 0.8F);
 
+        Variant grippe = new Variant("Grippe", 2, 0.4f, 0.0f, facteursTransmission, 10, 0.5f);
 
-        Variant Grippe = new Variant("Grippe", 2, 0.0f, 0.0f, facteursTransmission, 10, 0.5f);
+        Vaccin vaccin = new Vaccin("Vaccin Anti Grippe", TypeVaccin.Unidose, grippe);
 
-        EspaceCyclique espaceCyclique = new EspaceCyclique(10, 10, personneList, Grippe);
+
+        EspaceCyclique espaceCyclique = new EspaceCyclique(10, 10, personneList, grippe);
 
         espaceCyclique.initialiserEspace();
 
+        personne1.seFaireVacciner(vaccin);
+        personne2.seFaireVacciner(vaccin);
         espaceCyclique.nouveauCycle();
         espaceCyclique.nouveauCycle();
         espaceCyclique.nouveauCycle();
         espaceCyclique.nouveauCycle();
         espaceCyclique.nouveauCycle();
+
     }
 }

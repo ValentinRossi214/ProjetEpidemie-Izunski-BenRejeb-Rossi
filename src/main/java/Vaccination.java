@@ -1,29 +1,30 @@
 public class Vaccination {
-    //TODO: Ajouter l'accès à un vaccin d'une personne
     private int nbDosesPrises;
     private final Vaccin vaccin;
+    private final Personne personne;
 
-    public Vaccination(Vaccin vaccin) {
+    public Vaccination(Vaccin vaccin, Personne personne) {
         nbDosesPrises = 1;
         this.vaccin = vaccin;
+        this.personne = personne;
     }
 
+    //Méthode permettant d'effectuer une deuxième dose à une personne, si c'est possible
+    public void faireDeuxiemeDose(){
+        this.nbDosesPrises++;
+    }
+
+    //Définition des Getters
+    //Retourner le nombre de doses prises par une personne lors du ou des vaccinations
     public int getNbDosesPrises() {
         return nbDosesPrises;
     }
-
-    public void faireDeuxiemeDose () {
-        if(vaccin.getType() == TypeVaccin.Unidose) {
-            throw new IllegalArgumentException("Ce vaccin ne nécessite qu'une seule dose.");
-        }
-        if(nbDosesPrises == 2) {
-            throw new IllegalArgumentException("Cette personne à déjà reçu les deux doses de ce vaccin.");
-        }
-
-        nbDosesPrises++;
-    }
-
+    //Retourner le vaccin associé à une vaccination
     public Vaccin getVaccin() {
         return vaccin;
+    }
+    //Retourner la personne à laquelle est appliquée la vaccination
+    public Personne getPersonne(){
+        return this.personne;
     }
 }
