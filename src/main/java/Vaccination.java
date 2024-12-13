@@ -7,6 +7,9 @@ public class Vaccination {
         nbDosesPrises = 1;
         this.vaccin = vaccin;
         this.personne = personne;
+        if (vaccin.getType() == TypeVaccin.Unidose) {
+            personne.setSensibilite();
+        }
     }
 
     //Méthode permettant d'effectuer une deuxième dose à une personne, si c'est possible
